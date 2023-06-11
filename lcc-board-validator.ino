@@ -27,7 +27,8 @@ void find_eeprom(){
 
   delay(5);
 
-  if(read_status_reg & (0x01 << 1)){
+  if(read_status_reg != 0xFF &&
+     read_status_reg & (0x01 << 1)){
     // WEL bit is set, so we are talking with the EEPROM!
     // Let's go and disable it again
     found_eeprom = 1;
