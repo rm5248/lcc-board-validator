@@ -106,4 +106,33 @@ void loop() {
       blinkLEDs();
     }
   }
+
+  if(millis() % 5000 == 0){
+    if(found_can){
+      CANMessage msg;
+      msg.rtr = false;
+      msg.ext = true;
+      msg.id = 0xabcd;
+      msg.len = 2;
+      msg.data[0] = 0x55;
+      msg.data[1] = 0x92;
+      can.tryToSend(msg);
+      Serial.println("Send frame");
+    }
+  }
+
+  if (can.available ()) {
+    CANMessage frame;
+    can.receive (frame) ;
+    Serial.print("RX Frame! ID: " );
+    Serial.print(frame.id, HEX);
+    Serial.print(" data len: ");
+    Serial.print(frame.len);
+    Serial.print( " data: ");
+    for(int x = 0; x < frame.len; x++ ){
+      Serial.print(frame.data[x], HEX);
+      Serial.print(" ");
+    }
+    Serial.println();
+  }
 }
